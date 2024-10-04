@@ -1,0 +1,17 @@
+
+.container-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; 
+  text-align: center; 
+}
+
+
+.close-session-button {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  right: 16px;
+}
+

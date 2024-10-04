@@ -1,0 +1,29 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+
+    <ion-buttons slot="start">
+    </ion-buttons>
+
+    <ion-title>
+      Home
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Blank</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div id="container">
+    <ion-label>
+      Correo Electrónico: {{ email }}
+    </ion-label>
+  </div>
+  
+  <ion-button expand="block" class="close-session-button" (click)="onSignOutButtonPressed()">
+    Cerrar Sesión
+  </ion-button>
+</ion-content>
