@@ -1,29 +1,87 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
+    <ion-segment>
+      <ion-segment-button (click)="goToParaTi()">
+        Para ti
+      </ion-segment-button>
+      <ion-segment-button (click)="goToComunidad()">
+        Comunidad
+      </ion-segment-button>
+    </ion-segment>
 
-    <ion-buttons slot="start">
+    <ion-buttons slot="end">
+      <ion-button (click)="goToNotifications()">
+        <ion-icon slot="icon-only" name="notifications-outline"></ion-icon>
+      </ion-button>
+      <!-- Nuevo botón con menú de usuario (reemplazando el avatar) -->
+      <ion-button (click)="presentUserMenu($event)">
+        <ion-icon slot="icon-only" name="person-circle-outline"></ion-icon>
+      </ion-button>
     </ion-buttons>
-
-    <ion-title>
-      Home
-    </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <!-- Buscar por ingredientes -->
+  <div class="search-section">
+    <ion-searchbar placeholder="Buscar por ingredientes"></ion-searchbar>
 
-  <div id="container">
-    <ion-label>
-      Correo Electrónico: {{ email }}
-    </ion-label>
+    <!-- Aquí se agregan los chips de ingredientes -->
+    <div class="ingredient-chips">
+      <ion-chip 
+        *ngFor="let ingredient of ingredients" 
+        (click)="toggleIngredient(ingredient)"
+        [ngClass]="{'selected-chip': selectedIngredients.includes(ingredient)}"
+        class="ingredient-chip">
+        <ion-label>{{ ingredient }}</ion-label>
+        <ion-icon name="close-circle" slot="end" *ngIf="selectedIngredients.includes(ingredient)"></ion-icon>
+      </ion-chip>
+    </div>
   </div>
-  
-  <ion-button expand="block" class="close-session-button" (click)="onSignOutButtonPressed()">
-    Cerrar Sesión
-  </ion-button>
+
+  <!-- Ideas de comidas -->
+  <div class="recipes-section">
+    <ion-card>
+      <ion-img src="assets/img/tacos.jpg"></ion-img>
+      <ion-card-header>
+        <ion-card-title>Tacos de carne</ion-card-title>
+        <ion-card-subtitle>8 ingredientes</ion-card-subtitle>
+      </ion-card-header>
+    </ion-card>
+
+    <ion-card>
+      <ion-img src="assets/img/pepino-rollitos.jpg"></ion-img>
+      <ion-card-header>
+        <ion-card-title>Rollitos de Pepino</ion-card-title>
+        <ion-card-subtitle>10 ingredientes</ion-card-subtitle>
+      </ion-card-header>
+    </ion-card>
+  </div>
 </ion-content>
+
+<!-- Menú de navegación inferior -->
+<ion-footer>
+  <ion-toolbar>
+    <div class="footer-buttons">
+      <ion-button (click)="goToInicio()">
+        <ion-icon slot="icon-only" name="home-outline"></ion-icon>
+      </ion-button>
+
+      <ion-button (click)="goToExplorar()">
+        <ion-icon slot="icon-only" name="search-outline"></ion-icon>
+      </ion-button>
+
+      <ion-button (click)="goToGuardada()">
+        <ion-icon slot="icon-only" name="bookmark-outline"></ion-icon>
+      </ion-button>
+
+      <ion-button (click)="goToPlanificador()">
+        <ion-icon slot="icon-only" name="calendar-outline"></ion-icon>
+      </ion-button>
+
+      <ion-button (click)="goToListas()">
+        <ion-icon slot="icon-only" name="list-outline"></ion-icon>
+      </ion-button>
+    </div>
+  </ion-toolbar>
+</ion-footer>
