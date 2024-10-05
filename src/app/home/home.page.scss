@@ -99,3 +99,12 @@ body {
   transform: scale(1.05); /* Efecto de aumento */
   transition: transform 0.2s;
 }
+
+.nav-buttons {
+  display: flex;
+  align-items: center; /* Centra verticalmente los botones */
+}
+
+.spacer {
+  width: 20px; /* Ancho del espacio vacío */
+}
