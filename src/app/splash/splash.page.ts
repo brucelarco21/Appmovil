@@ -18,12 +18,11 @@ export class SplashPage implements OnInit {
   }
 
   async checkSession() {
-    const sessionStatus = await this.storageService.get('isSessionActive')
-    if (sessionStatus) {
-      this.router.navigate(['/home'])
+    const user = await this.storageService.get('user');
+    if (user) {
+      this.router.navigate(['/home']);
     } else {
-      this.router.navigate(['/login'])
+       this.router.navigate(['/login']);
     }
   }
 }
-

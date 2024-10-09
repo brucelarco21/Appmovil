@@ -23,14 +23,25 @@ export class LoginPage implements OnInit {
   ngOnInit() { }
 
   async onLoginButtonPressed() {
-    if (this.sessionManager.performLogin(this.user, this.password)) {
-      await this.storageService.set('userEmail', this.email)
-      await this.storageService.set('isSessionActive', true)
-      this.router.navigate(['/home'], { queryParams: { email: this.email } });
-    } else {
-      this.user = '';
-      this.password = '';
-      alert('Las credenciales ingresadas son inválidas.');
+
+    try {
+
+      const userCredential = await this.sessionManager.loginWith(this.email, this.password)
+      const user = userCredential.user
+
+      const userData = {
+        uid: user.uid,
+        email: user.email,
+        emailVerified: user.emailVerified,
+        displayName: user.displayName,
+        photoURL: user.photoURL,
+      }
+
+      await this.storageService.set('user', userData)
+      this.router.navigate(['/splash'])
+
+    } catch (error) {
+      console.error('Error al iniciar sesión:', error);
     }
   }
 

@@ -1,0 +1,31 @@
+.register-container {
+  padding: 20px;
+  
+  ion-item {
+    --highlight-color-focused: #3880ff; // Color al hacer foco en el campo
+    --color: #666; // Color del texto en el campo
+    margin-bottom: 15px;
+  }
+
+  ion-label {
+    color: #888; // Color del label
+    font-weight: bold;
+  }
+
+  ion-input {
+    color: #222; // Color del texto ingresado
+  }
+
+  ion-button {
+    margin-top: 20px;
+    background-color: #3880ff; // Color del botón
+    color: #fff;
+    font-weight: bold;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+
+    &:hover {
+      background-color: #3171e0;
+    }
+  }
+}
