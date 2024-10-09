@@ -1,54 +1,92 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { NavController } from '@ionic/angular';
-import { CancelAlertService } from 'src/managers/CancelAlertService';
+import { Component, OnInit } from '@angular/core';
 import { SessionManager } from 'src/managers/SessionManager';
+import { Router } from '@angular/router';
+import { CancelAlertService } from 'src/managers/CancelAlertService';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.page.html',
   styleUrls: ['./register.page.scss'],
 })
+
 export class RegisterPage {
-  username: string = '';
+
   email: string = '';
   password: string = '';
 
   constructor(
-    private navCtrl: NavController,
-    private sessionManage: SessionManager,
+    private sessionManager: SessionManager, 
     private router: Router,
     private alert: CancelAlertService
-  ) {}
+  ) { }
 
-  confirmRegister() {
-    this.alert.showAlert(
-      'Confirmación de Registro',
-      '¿Estás seguro de que deseas registrarte?',
-      () => this.onRegister(), // Acción al confirmar
-      () => console.log('Registro cancelado') // Acción al cancelar
-    );
-  }
-
-  async onRegister() {
+  async onRegisterButtonPressed() {
     try {
-      const userCredential = await this.sessionManage.registerUserWith(
+      const userCredential = await this.sessionManager.registerUserWith(
         this.email,
         this.password
       );
-      console.log('Registro exitoso:', userCredential);
-      this.router.navigate(['/login']); // Redirige a la página de login tras el registro
-    } catch (error) {
-      console.error('Error en el registro:', error);
-      this.alert.showAlert(
-        'Error en el registro', 
-        'No se pudo completar el registro. Inténtalo nuevamente.', 
-        () => {} // Acción vacía o puedes definir alguna otra acción
-      );
+
+      const user = userCredential.user;
+
+      if (user) {
+        this.alert.showAlert(
+          'Registro exitoso',                         
+          'Ya eres parte de nuestro sistema', 
+          () => {    
+            this.router.navigate(['/splash']);     
+          }
+        )
+      } else {
+        alert('¡Registro exitoso!');
+      }
+
+    } catch (error: any) {
+
+      switch (error.code) {
+        case 'auth/email-already-in-use':
+          this.alert.showAlert(
+            'Error',                         
+            'Este correo electrónico ya está en uso. Por favor, utiliza otro o inicia sesión.', 
+            () => {    
+              this.clean()     
+            }
+          )
+          break
+        case 'auth/invalid-email':
+          this.alert.showAlert(
+            'Error',                         
+            'La dirección de correo electrónico no es válida.', 
+            () => {    
+              this.clean()   
+            }
+          )
+          break
+        case 'auth/weak-password':
+          this.alert.showAlert(
+            'Error',                         
+            'La contraseña es muy débil.', 
+            () => {    
+              this.clean()      
+            }
+          )
+          break
+        default:
+          this.alert.showAlert(
+            'Error',                         
+            'Ocurrió un error al registrar el usuario: ' + error.message, 
+            () => {    
+              this.clean()      
+            }
+          )
+          break
+      }
     }
   }
 
-  goToLogin() {
-    this.navCtrl.navigateBack('/login');
+  clean() {
+    this.email = ''
+    this.password = ''
   }
+  
 }
