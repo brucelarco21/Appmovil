@@ -4,25 +4,21 @@
       <ion-button (click)="goToParaTi()">
         <ion-icon slot="icon-only" name="star-outline"></ion-icon>
       </ion-button>
-      
       <ion-button (click)="goToComunidad()">
         <ion-icon slot="icon-only" name="people-outline"></ion-icon>
       </ion-button>
-    
-      <div class="spacer"></div> <!-- Espacio vacío en el medio -->
-    
+      <div class="spacer"></div>
       <ion-button (click)="goToGuardada()">
         <ion-icon slot="icon-only" name="bookmark-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
-    
 
     <ion-buttons slot="end">
       <ion-button (click)="goToNotifications()">
         <ion-icon slot="icon-only" name="notifications-outline"></ion-icon>
       </ion-button>
-      <ion-button (click)="presentUserMenu($event)">
-        <ion-icon slot="icon-only" name="person-circle-outline"></ion-icon>
+      <ion-button (click)="logout()">
+        <ion-icon slot="icon-only" name="log-out-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -30,7 +26,11 @@
 
 <ion-content [fullscreen]="true">
   <div class="search-section">
-    <ion-searchbar placeholder="Buscar por ingredientes"></ion-searchbar>
+    <ion-searchbar 
+      [(ngModel)]="searchQuery" 
+      (ionInput)="buscarProductos()" 
+      placeholder="Buscar por ingredientes">
+    </ion-searchbar>
 
     <div class="ingredient-chips">
       <ion-chip 
@@ -45,24 +45,18 @@
   </div>
 
   <div class="recipes-section">
-    <ion-card>
-      <ion-img src="assets/img/favicon.png"></ion-img>
+    <ion-card *ngFor="let producto of productos">
       <ion-card-header>
-        <ion-card-title>Tacos de carne</ion-card-title>
-        <ion-card-subtitle>8 ingredientes</ion-card-subtitle>
+        <ion-card-title>{{ producto.nombre }}</ion-card-title>
+        <ion-card-subtitle>{{ producto.ingredientes.length }} ingredientes</ion-card-subtitle>
       </ion-card-header>
     </ion-card>
-
-    <ion-card>
-      <ion-img src="assets/img/favicon.png"></ion-img>
-      <ion-card-header>
-        <ion-card-title>Rollitos de Pepino</ion-card-title>
-        <ion-card-subtitle>10 ingredientes</ion-card-subtitle>
-      </ion-card-header>
-    </ion-card>
+    <div *ngIf="productos.length === 0">
+      <p>No se encontraron productos.</p>
+    </div>
   </div>
 
-  <div *ngIf="scannedCode">
+  <div *ngIf="scannedCode" class="scanned-code">
     <p>Código escaneado: {{ scannedCode }}</p>
   </div>
 </ion-content>
@@ -73,20 +67,15 @@
       <ion-button (click)="goToInicio()">
         <ion-icon slot="icon-only" name="home-outline"></ion-icon>
       </ion-button>
-
       <ion-button (click)="goToExplorar()">
         <ion-icon slot="icon-only" name="search-outline"></ion-icon>
       </ion-button>
-
-      <!-- Botón de escanear código de barras -->
       <ion-button (click)="scanBarcode()">
         <ion-icon slot="icon-only" name="scan-outline"></ion-icon>
       </ion-button>
-
       <ion-button (click)="goToPlanificador()">
         <ion-icon slot="icon-only" name="calendar-outline"></ion-icon>
       </ion-button>
-
       <ion-button (click)="goToListas()">
         <ion-icon slot="icon-only" name="list-outline"></ion-icon>
       </ion-button>

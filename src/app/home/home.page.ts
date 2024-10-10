@@ -1,162 +1,131 @@
 import { Component } from '@angular/core';
-import { StorageService } from 'src/managers/StorageService';
-import { Router } from '@angular/router';
-import { CancelAlertService } from 'src/managers/CancelAlertService';
-import { PopoverController, AlertController } from '@ionic/angular';
-import { UserMenuComponent } from '../user-menu/user-menu.component';
-import { ChangeDetectorRef } from '@angular/core';
-import { BarcodeScanner } from '@awesome-cordova-plugins/barcode-scanner/ngx';
+import { NavController } from '@ionic/angular';
+import { ProductosService } from '../services/productos.service';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
-  providers: [BarcodeScanner]
 })
 export class HomePage {
-  email: string = '';
-  password: string = ''; // Para almacenar la contraseña
-  selectedIngredients: string[] = [];
-  ingredients: string[] = [
-    'Carne molida de res',
-    'Aguacate',
-    'Pollo',
-    'Pescado',
-    'Arroz',
-    'Frijoles',
-    'Vegetales',
-  ];
-  scannedCode: string = '';
+  searchQuery: string = '';
+  scannedCode: string | null = null; // Asegúrate de inicializar esta propiedad
+  productos: any[] = []; // Cambia el tipo según tus necesidades
+  ingredients: string[] = []; // Asegúrate de tener esta propiedad
+  selectedIngredients: string[] = []; // Para manejar ingredientes seleccionados
+  categoriaId: number = 0; // Variable para el ID de la categoría
 
-  constructor(
-    private router: Router, 
-    private storageService: StorageService,
-    private cancelAlertService: CancelAlertService,
-    private popoverController: PopoverController,
-    private cd: ChangeDetectorRef,
-    private barcodeScanner: BarcodeScanner,
-    private alertController: AlertController
-  ) {}
+  constructor(private navCtrl: NavController, private productosService: ProductosService) {}
 
-  async ngOnInit() { 
-    await this.loadData();
+  // Método para buscar productos
+  buscarProductos() {
+    this.productosService.buscarProductos(this.searchQuery).subscribe((data: any) => {
+      this.productos = data; // Asegúrate de que esto se adapte a tu respuesta del servicio
+    }, error => {
+      console.error('Error al buscar productos', error);
+    });
   }
 
-  async loadData() {
-    const user = await this.storageService.getUser(); // Usar el nuevo método
-    this.email = user.email || ''; // Asegúrate de que email nunca sea undefined
+  // Método para listar productos por categoría
+  listarPorCategoria() {
+    this.productosService.listarProductosPorCategoria(this.categoriaId).subscribe((data: any) => {
+      this.productos = data; // Asegúrate de que esto se adapte a tu respuesta del servicio
+    }, error => {
+      console.error('Error al listar productos por categoría', error);
+    });
   }
 
+  // Método para crear un producto
+  crearProducto() {
+    const nuevoProducto = {
+      nombre: 'Nuevo Producto', // Aquí podrías cambiarlo por una entrada del usuario
+      categoriaId: this.categoriaId,
+      precio: 1000, // Aquí podrías cambiarlo por una entrada del usuario
+      // Otros campos necesarios según tu API
+    };
+
+    this.productosService.crearProducto(nuevoProducto).subscribe((response) => {
+      console.log('Producto creado con éxito:', response);
+      this.listarPorCategoria(); // Recargar productos de la categoría
+    }, error => {
+      console.error('Error al crear el producto:', error);
+    });
+  }
+
+  // Método para eliminar un producto
+  eliminarProducto(productoId: number) {
+    this.productosService.eliminarProducto(productoId).subscribe((response) => {
+      console.log('Producto eliminado con éxito:', response);
+      this.listarPorCategoria(); // Actualizar la lista de productos
+    }, error => {
+      console.error('Error al eliminar el producto:', error);
+    });
+  }
+
+  // Método para ir a la sección "Para Ti"
+  goToParaTi() {
+    this.navCtrl.navigateForward('/para-ti');
+  }
+
+  // Método para ir a la comunidad
+  goToComunidad() {
+    this.navCtrl.navigateForward('/comunidad');
+  }
+
+  // Método para ir a las guardadas
+  goToGuardada() {
+    this.navCtrl.navigateForward('/guardadas');
+  }
+
+  // Método para ir a las notificaciones
+  goToNotifications() {
+    this.navCtrl.navigateForward('/notificaciones');
+  }
+
+  // Método para abrir el menú del usuario
+  presentUserMenu(event: Event) {
+    // Implementa la lógica para abrir el menú
+  }
+
+  // Método para alternar ingredientes seleccionados
   toggleIngredient(ingredient: string) {
     const index = this.selectedIngredients.indexOf(ingredient);
     if (index > -1) {
-      this.selectedIngredients.splice(index, 1); // Eliminar ingrediente si ya está seleccionado
+      this.selectedIngredients.splice(index, 1); // Elimina el ingrediente si ya está seleccionado
     } else {
-      this.selectedIngredients.push(ingredient); // Agregar ingrediente si no está seleccionado
+      this.selectedIngredients.push(ingredient); // Agrega el ingrediente a los seleccionados
     }
+    // Aquí puedes actualizar los productos según los ingredientes seleccionados
   }
 
-  async onSignOutButtonPressed() {
-    this.cancelAlertService.showAlert(
-      'Cerrar sesión',                          
-      '¿Estás seguro de que quieres cerrar sesión?',  
-      async () => {
-        await this.storageService.clear();     
-        this.email = ''; // Limpia el email del componente
-        this.cd.detectChanges(); // Forzar la actualización de la vista
-        this.router.navigate(['/splash']);     
-      },
-      () => {
-        console.log('Sesión no cerrada');
-      }
-    );
+  // Método para cerrar sesión
+  logout() {
+    // Aquí puedes agregar la lógica para cerrar sesión, como limpiar el token, etc.
+    this.navCtrl.navigateRoot('/login'); // Cambia '/login' a la ruta de tu página de inicio de sesión
   }
 
-  async presentUserMenu(event: MouseEvent) {
-    const popover = await this.popoverController.create({
-      component: UserMenuComponent,
-      event: event,
-      translucent: true
-    });
-    return await popover.present();
-  }
-
-  // Funciones para la navegación del navbar superior
-  goToParaTi() {
-    this.router.navigate(['/para-ti']);
-  }
-
-  goToComunidad() {
-    this.router.navigate(['/comunidad']);
-  }
-
-  goToNotifications() {
-    this.router.navigate(['/notificaciones']);
-  }
-
-  goToUserProfile() {
-    this.router.navigate(['/perfil']);
-  }
-
-  // Funciones para la navegación del footer
+  // Método para ir a la página de inicio
   goToInicio() {
-    this.router.navigate(['/inicio']);
+    this.navCtrl.navigateForward('/inicio');
   }
 
+  // Método para ir a la página de explorar
   goToExplorar() {
-    this.router.navigate(['/explorar']);
+    this.navCtrl.navigateForward('/explorar');
   }
 
-  goToGuardada() {
-    this.router.navigate(['/guardada']);
+  // Método para escanear código de barras
+  scanBarcode() {
+    // Asegúrate de actualizar this.scannedCode con el resultado
   }
 
+  // Método para ir al planificador
   goToPlanificador() {
-    this.router.navigate(['/planificador']);
+    this.navCtrl.navigateForward('/planificador');
   }
 
+  // Método para ir a la página de listas
   goToListas() {
-    this.router.navigate(['/listas']);
-  }
-
-  // Función para escanear código de barras
-  async scanBarcode() {
-    try {
-      const barcodeData = await this.barcodeScanner.scan();
-      this.scannedCode = barcodeData.text;
-      if (this.scannedCode) {
-        const alert = await this.alertController.create({
-          header: 'Producto añadido',
-          message: `Código de barras escaneado: ${this.scannedCode}`,
-          buttons: ['OK']
-        });
-        await alert.present();
-
-        // Añade el producto a la lista
-        this.addProductToList(this.scannedCode);
-      }
-    } catch (err) {
-      console.log('Error al escanear el código de barras:', err);
-    }
-  }
-
-  // Función para añadir el producto escaneado a la lista de ingredientes seleccionados
-  addProductToList(barcode: string) {
-    const product = `Producto con código ${barcode}`;
-    if (!this.selectedIngredients.includes(product)) {
-      this.selectedIngredients.push(product);
-    } else {
-      this.alertDuplicateProduct();
-    }
-  }
-
-  // Función para alertar al usuario si el producto ya está en la lista
-  async alertDuplicateProduct() {
-    const alert = await this.alertController.create({
-      header: 'Producto duplicado',
-      message: 'Este producto ya ha sido añadido a la lista.',
-      buttons: ['OK']
-    });
-    await alert.present();
+    this.navCtrl.navigateForward('/listas');
   }
 }
