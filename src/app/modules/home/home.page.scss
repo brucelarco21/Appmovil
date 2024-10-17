@@ -1,0 +1,21 @@
+ion-content {
+  --background: #121212; /* Fondo oscuro */
+}
+
+.user-info {
+  margin-bottom: 16px; /* Espacio entre la tarjeta del usuario y otros elementos */
+}
+
+.recipe-list {
+  margin-top: 16px;
+}
+
+.backup-recipes-button, .close-session-button {
+  margin-top: 16px;
+  background-color: #4a90e2; /* Color de fondo personalizado */
+  color: white;
+}
+
+.backup-recipes-button:hover, .close-session-button:hover {
+  background-color: #357abd; /* Color de fondo al pasar el cursor */
+}

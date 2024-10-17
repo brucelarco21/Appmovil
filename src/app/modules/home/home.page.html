@@ -1,0 +1,43 @@
+<ion-content [fullscreen]="true" class="ion-padding">
+  <div class="user-info">
+    <ion-card>
+      <ion-card-content>
+        <ion-item lines="none">
+          <ion-avatar slot="start">
+            <img [src]="user?.photoURL || 'assets/default-avatar.png'" alt="Foto de perfil">
+          </ion-avatar>
+          <ion-label>
+            <h2>{{ user?.displayName || 'Nombre no disponible' }}</h2>
+            <p>Correo Electrónico: {{ user?.email }}</p>
+          </ion-label>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <ion-list class="recipe-list">
+    <ion-item *ngFor="let recipe of recipes">
+      <ion-avatar slot="start">
+        <img [src]="recipe.strMealThumb || 'assets/default-recipe.png'" alt="Imagen de la receta">
+      </ion-avatar>
+      <ion-label>
+        <h2>{{ recipe.strMeal }}</h2>
+        <p>Descripción: {{ recipe.strInstructions || 'No hay descripción disponible.' }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-button
+    expand="block"
+    class="backup-recipes-button"
+    (click)="saveRecipesToFirebase()">
+    RESPALDAR RECETAS
+  </ion-button>
+
+  <ion-button
+    expand="block"
+    class="close-session-button"
+    (click)="onSignOutButtonPressed()">
+    Cerrar Sesión
+  </ion-button>
+</ion-content>
