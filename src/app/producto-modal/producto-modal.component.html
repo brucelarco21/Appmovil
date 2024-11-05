@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>{{ producto.id ? 'Actualizar Producto' : 'Agregar Producto' }}</ion-title>
+    <ion-title>{{ producto ? 'Editar Producto' : 'Agregar Producto' }}</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="cerrar()">Cerrar</ion-button>
     </ion-buttons>
@@ -8,27 +8,36 @@
 </ion-header>
 
 <ion-content>
-  <ion-item>
-    <ion-label position="floating">Nombre</ion-label>
-    <ion-input [(ngModel)]="producto.nombre"></ion-input>
-  </ion-item>
+  <form (ngSubmit)="confirmar()">
+    <ion-item>
+      <ion-label position="stacked">Nombre</ion-label>
+      <ion-input [(ngModel)]="producto.nombre" name="nombre" required></ion-input>
+    </ion-item>
 
-  <ion-item>
-    <ion-label position="floating">Descripción</ion-label>
-    <ion-input [(ngModel)]="producto.descripcion"></ion-input>
-  </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Descripción</ion-label>
+      <ion-input [(ngModel)]="producto.descripcion" name="descripcion" required></ion-input>
+    </ion-item>
 
-  <ion-item>
-    <ion-label position="floating">Precio</ion-label>
-    <ion-input type="number" [(ngModel)]="producto.precio"></ion-input>
-  </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Precio</ion-label>
+      <ion-input type="number" [(ngModel)]="producto.precio" name="precio" required></ion-input>
+    </ion-item>
 
-  <ion-item>
-    <ion-label>Seleccionar Imagen</ion-label>
-    <input type="file" (change)="manejarArchivo($event)" accept="image/*" />
-  </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Stock</ion-label>
+      <ion-input type="number" [(ngModel)]="producto.stock" name="stock" required></ion-input>
+    </ion-item>
 
-  <ion-footer>
-    <ion-button expand="full" (click)="confirmar()">Guardar</ion-button>
-  </ion-footer>
+    <ion-item>
+      <ion-label position="stacked">Imagen</ion-label>
+      <input type="file" (change)="manejarArchivo($event)" accept="image/*" />
+    </ion-item>
+
+    <ion-item *ngIf="imagenSeleccionada">
+      <img [src]="imagenSeleccionada" alt="Imagen seleccionada" style="width: 100%; max-width: 200px; height: auto; margin-top: 10px;" />
+    </ion-item>
+
+    <ion-button expand="full" type="submit">{{ producto ? 'Actualizar' : 'Agregar' }}</ion-button>
+  </form>
 </ion-content>

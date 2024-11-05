@@ -14,6 +14,7 @@ interface Producto {
   nombre: string;
   descripcion: string;
   precio: number;
+  stock: number; // Nueva propiedad para el stock de cada producto
   imagenUrl?: string;
 }
 
@@ -27,6 +28,9 @@ export class HomePage {
   productos$: Observable<Producto[]>; // Observable de productos
   searchTerm: string = ''; // Campo para el término de búsqueda
   filteredProductos$: Observable<Producto[]>; // Observable de productos filtrados
+
+  totalStock: number = 0; // Propiedad para acumular el stock total
+  totalValorInventario: number = 0; // Propiedad para el valor total del inventario
 
   constructor(
     private router: Router,
@@ -48,6 +52,12 @@ export class HomePage {
   obtenerProductos() {
     this.productos$ = this.productosService.getProductos(); 
     this.filteredProductos$ = this.productos$; // Inicializa con todos los productos
+
+    // Recalculamos el stock y el valor total
+    this.productos$.subscribe((productos) => {
+      this.totalStock = productos.reduce((acc, prod) => acc + prod.stock, 0);
+      this.totalValorInventario = productos.reduce((acc, prod) => acc + (prod.precio * prod.stock), 0);
+    });
   }
 
   filterProductos() {
@@ -65,7 +75,7 @@ export class HomePage {
     const modal = await this.modalController.create({
       component: ProductoModalComponent,
       componentProps: {
-        producto: { nombre: '', descripcion: '', precio: 0, imagenUrl: '' },
+        producto: { nombre: '', descripcion: '', precio: 0, stock: 0, imagenUrl: '' }, // Incluye el stock en el nuevo producto
       },
     });
 
@@ -88,7 +98,7 @@ export class HomePage {
     const modal = await this.modalController.create({
       component: ProductoModalComponent,
       componentProps: {
-        producto: { ...producto },
+        producto: { ...producto }, // Incluye el stock al actualizar
       },
     });
 
