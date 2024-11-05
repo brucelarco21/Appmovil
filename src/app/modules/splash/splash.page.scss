@@ -1,0 +1,15 @@
+:host {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    background: url('src/assets/default-avatar.png') no-repeat center center; // Fondo innovador
+    background-size: cover; // Asegúrate que el fondo cubra todo
+    color: white; // Color del texto, si lo necesitas
+  }
+  
+  img {
+    width: 200px; // Ajusta el tamaño del logo
+    margin-top: 20px; // Espaciado superior, si lo necesitas
+  }
+  

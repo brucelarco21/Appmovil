@@ -1,0 +1,45 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: #ffffff;
+  font-family: 'Roboto', sans-serif; // Fuente general
+}
+
+ion-header {
+  background-color: #2196f3; // Color del encabezado
+  color: white; // Color del texto del encabezado
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); // Sombra para el encabezado
+}
+
+h2 {
+  margin: 10px 0;
+  text-align: center; // Centra el título
+  font-weight: bold; // Texto en negrita
+}
+
+.content-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; // Centra el contenido
+  align-items: center; // Centra el contenido
+  width: 100%;
+  padding: 32px; // Espacio a los lados
+  height: 100%; // Asegura que el contenedor ocupe todo el espacio disponible
+}
+
+.input-container {
+  width: 100%; // Asegura que los inputs ocupen el 100% del ancho
+  margin-bottom: 16px; // Espacio entre los inputs y el botón
+}
+
+ion-button {
+  background-color: #4caf50; // Color de fondo para el botón
+  color: white; // Color del texto del botón
+  border-radius: 5px; // Bordes redondeados
+  transition: background 0.3s; // Transición suave
+
+  &:hover {
+    background-color: #388e3c; // Color al pasar el ratón
+  }
+}

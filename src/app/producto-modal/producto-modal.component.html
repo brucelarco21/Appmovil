@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ producto.id ? 'Actualizar Producto' : 'Agregar Producto' }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cerrar()">Cerrar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <ion-label position="floating">Nombre</ion-label>
+    <ion-input [(ngModel)]="producto.nombre"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="floating">Descripción</ion-label>
+    <ion-input [(ngModel)]="producto.descripcion"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="floating">Precio</ion-label>
+    <ion-input type="number" [(ngModel)]="producto.precio"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Seleccionar Imagen</ion-label>
+    <input type="file" (change)="manejarArchivo($event)" accept="image/*" />
+  </ion-item>
+
+  <ion-footer>
+    <ion-button expand="full" (click)="confirmar()">Guardar</ion-button>
+  </ion-footer>
+</ion-content>

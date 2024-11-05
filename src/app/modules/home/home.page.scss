@@ -1,0 +1,76 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: #ffffff;
+  font-family: 'Roboto', sans-serif; // Fuente general
+}
+
+.user-info {
+  position: fixed;
+  top: 48px;
+  left: 16px;
+  right: 16px;
+  z-index: 1;
+}
+
+.close-session-button {
+  position: fixed;
+  bottom: 16px;
+  left: 16px;
+  right: 16px;
+  z-index: 1;
+}
+
+.open-characters-button {
+  position: fixed;
+  bottom: 72px; /* 8px por encima del botón de Cerrar Sesión */
+  left: 16px;
+  right: 16px;
+  z-index: 1;
+}
+
+.character-list {
+  margin: 0;
+  padding: 0;
+}
+
+h2 {
+  margin: 10px 0;
+  font-weight: bold; // Hacer el texto más audaz
+  text-align: center; // Centrar el texto
+}
+
+.product-list {
+  padding: 10px;
+  display: grid; // Cambiar a grid para una mejor disposición
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); // Crear columnas
+  gap: 10px; // Espacio entre elementos
+
+  ion-item {
+    background: #f0f0f0; // Color de fondo para los ítems
+    border-radius: 8px; // Bordes redondeados
+    transition: background 0.3s; // Transición suave al pasar el ratón
+
+    &:hover {
+      background: #e0e0e0; // Color al pasar el ratón
+    }
+  }
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px; // Separar del contenido superior
+
+  ion-button {
+    background-color: #4caf50; // Color de fondo para los botones
+    color: white; // Color del texto de los botones
+    border-radius: 5px; // Bordes redondeados
+    transition: background 0.3s; // Transición suave
+
+    &:hover {
+      background-color: #388e3c; // Color al pasar el ratón
+    }
+  }
+}

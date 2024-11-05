@@ -1,0 +1,57 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button> <!-- Botón de retroceso -->
+    </ion-buttons>
+    <ion-title>Profile</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Profile</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <!-- Tarjeta centrada con imagen, correo e input para nombre -->
+  <div class="card-container">
+
+    <!-- Mensaje para actualizar la foto de perfil -->
+    <div class="update-photo-message">
+      <ion-label>Para actualizar la foto de perfil, haz click en la imagen</ion-label>
+    </div>
+
+    <ion-card>
+      <ion-card-content class="card-content">
+        <ion-avatar class="avatar-container">
+          <img [src]="userPhotoURL" alt="Avatar">
+          <!-- Botón transparente sobre la imagen -->
+          <ion-button fill="clear" class="avatar-overlay-button" (click)="onProfileImagePressed()"></ion-button>
+        </ion-avatar>
+        <ion-label>
+          <h2>{{ userEmail }}</h2>
+        </ion-label>
+        <ion-item>
+          <ion-input [(ngModel)]="userName" placeholder="Introduce tu nombre"></ion-input>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <!-- Botón para actualizar el perfil -->
+  <ion-button
+    expand="block"
+    class="update-profile-button"
+    (click)="onUpdateButtonPressed()">
+    Update Profile
+  </ion-button>
+
+  <!-- Botón de Cerrar Sesión -->
+  <ion-button
+    expand="block"
+    class="close-session-button"
+    (click)="onSignOutButtonPressed()">
+    Cerrar Sesión
+  </ion-button>
+</ion-content>

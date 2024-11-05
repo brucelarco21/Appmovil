@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Productos</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="onProfileButtonPressed()">Perfil</ion-button>
+      <ion-button (click)="onSignOutButtonPressed()">Cerrar sesión</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- Campo de búsqueda -->
+  <ion-searchbar [(ngModel)]="searchTerm" (ionInput)="filterProductos()"></ion-searchbar>
+
+  <!-- Lista de productos -->
+  <ion-list>
+    <ion-item *ngFor="let producto of filteredProductos$ | async">
+      <ion-thumbnail slot="start">
+        <img [src]="producto.imagenUrl || 'assets/placeholder.png'" alt="Imagen del producto">
+      </ion-thumbnail>
+      <ion-label>
+        <h2>{{ producto.nombre }}</h2>
+        <p>{{ producto.descripcion }}</p>
+        <p>Precio: {{ producto.precio | currency }}</p>
+      </ion-label>
+      <ion-buttons slot="end">
+        <ion-button (click)="actualizarProducto(producto)">Editar</ion-button>
+        <ion-button color="danger" (click)="eliminarProducto(producto.id)">Eliminar</ion-button>
+      </ion-buttons>
+    </ion-item>
+  </ion-list>
+
+  <!-- Botón flotante para agregar productos -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="agregarProducto()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

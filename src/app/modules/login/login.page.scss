@@ -1,0 +1,34 @@
+ion-content {
+  display: flex;
+  justify-content: center; /* Centra verticalmente si necesitas */
+  align-items: center; /* Centra horizontalmente */
+  background-color: #f5f5f5; // Color de fondo suave
+}
+
+.content-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end; /* Asegura que los botones estén en la parte inferior */
+  width: 100%;
+  padding: 32px; /* Espacio a los lados */
+  gap: 16px; /* Espacio entre input-container y button-container */
+  height: 100%; /* Asegura que el contenedor ocupe todo el espacio disponible */
+
+  ion-item {
+    margin-bottom: 16px; // Espacio entre cada input
+    background-color: #ffffff; // Color de fondo para los inputs
+    border-radius: 8px; // Bordes redondeados
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); // Sombra sutil
+  }
+
+  ion-button {
+    background-color: #2196f3; // Color de fondo para el botón
+    color: white; // Color del texto del botón
+    border-radius: 5px; // Bordes redondeados
+    transition: background 0.3s; // Transición suave
+
+    &:hover {
+      background-color: #1976d2; // Color al pasar el ratón
+    }
+  }
+}
